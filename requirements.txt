@@ -1,0 +1,19 @@
+Flask
+Flask-WTF
+Flask-Login
+Flask-SQLAlchemy
+WTForms
+email-validator
+
+# HTTP and environment
+requests
+python-dotenv
+
+# External integrations
+twilio
+
+# PDF generation
+reportlab
+
+# Testing
+pytest
