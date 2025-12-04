@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}{{ item.name }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="card">
+        {# If image_url is already an absolute URL or an absolute path, use it directly. Otherwise assume it's a filename stored under static/uploads/ #}
+    {% if item.image_url and (item.image_url.startswith('http') or item.image_url.startswith('/')) %}
+    <img src="{{ item.image_url }}" class="card-img-top" alt="{{ item.name }}" style="width:200px; height:200px; object-fit:cover">
+    {% else %}
+    <img src="{{ url_for('static', filename='uploads/' ~ item.image_url) }}" class="card-img-top" alt="{{ item.name }}" style="width:200px; height:200px; object-fit:cover">
+    {% endif %}
+        <div class="card-body">
+            <h5 class="card-title">{{ item.name }}</h5>
+            <p class="card-text">Price: KES {{ item.price }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

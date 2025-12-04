@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title>{% block title %}Mitumba Shop{% endblock %}</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome Icons -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Custom CSS -->
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #fdfdfd;
+        padding-top: 70px; /* space for fixed navbar */
+      }
+
+      .navbar-brand {
+        font-size: 1.4rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+      }
+
+      /* Sticky Navbar */
+      .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1030;
+      }
+
+      /* Hero Banner */
+      .hero-banner {
+        background: url('/static/img/hero.webp') center/cover no-repeat;
+        height: 60vh;
+        min-height: 350px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        position: relative;
+      }
+      .hero-banner::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(0,0,0,.4);
+      }
+      .hero-content {
+        position: relative;
+        z-index: 10;
+      }
+
+      /* Footer */
+      footer {
+        font-size: 0.9rem;
+      }
+
+      /* Navbar links bigger for TV & mobile and match brand font */
+      .navbar-nav .nav-link {
+        font-family: inherit; /* match body/brand */
+        font-size: 0.95rem; /* align with .navbar-brand sizing */
+        font-weight: 600; /* slightly less bold than brand */
+        padding: 0.75rem 1rem;
+        color: #fff;
+      }
+
+      /* Increase tappable area for TV remote navigation */
+      @media (min-width: 1200px) {
+        .navbar-nav .nav-link {
+          font-size: 1.4rem;
+          padding: 1rem 1.2rem;
+        }
+      }
+
+      /* Responsive hero height for mobile */
+      @media (max-width: 768px) {
+        .hero-banner {
+          height: 40vh;
+        }
+      }
+
+      /* Make sure collapse menu is touch-friendly */
+      .navbar-collapse {
+        background-color: #343a40;
+      }
+    </style>
+
+  </head>
+  <body class="d-flex flex-column min-vh-100">
+
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg fixed-top shadow-sm navbar-dark" style="background: linear-gradient(90deg, #111, #222, #111); height: 50px;">
+    <div class="container">
+
+      <!-- BRAND -->
+      <a class="navbar-brand fw-bold d-flex align-items-center" href="{{ url_for('main.home') }}" style="font-size: 0.9rem; height: 100%;">
+        <i class="fa-solid fa-shirt me-1"></i> Mitumba Store
+      </a>
+
+      <!-- MOBILE TOGGLER -->
+      <button class="navbar-toggler" type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#mainNavbar"
+        aria-controls="mainNavbar"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+        style="height: 100%;">
+        <span><i class="fa-solid fa-bars fa-lg"></i></span>
+      </button>
+
+      <!-- SEARCH BAR -->
+      <form class="d-flex mx-auto my-0 w-50 position-relative" action="{{ url_for('main.shop') }}" method="GET" style="height: 100%;">
+        <input class="form-control rounded-pill ps-3 pe-4 border-0 shadow-sm h-100" 
+              type="search" 
+              name="q" 
+              placeholder="Search products..." 
+              aria-label="Search"
+              style="font-size: 0.75rem;">
+        <button class="btn btn-warning position-absolute end-0 top-0 rounded-pill h-100 px-3 shadow-sm" type="submit">
+          <i class="fa-solid fa-magnifying-glass center" style="font-size: 1.2rem;"></i>
+        </button>
+      </form>
+
+      <!-- NAV MENU -->
+      <div class="collapse navbar-collapse" id="mainNavbar">
+        <ul class="navbar-nav ms-auto align-items-center" style="height: 100%; font-size: 0.75rem;">
+
+          <!-- Home removed as per admin navbar configuration -->
+
+          <li class="nav-item">
+            <a href="{{ url_for('main.shop') }}" class="nav-link px-2 py-0 d-flex align-items-center" style="height: 100%;">
+              <i class="fa-solid fa-store me-1"></i> Shop
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="{{ url_for('main.contact') }}" class="nav-link px-2 py-0 d-flex align-items-center" style="height: 100%;">
+              <i class="fa-solid fa-phone me-1"></i> Contact
+            </a>
+          </li>
+
+          {% if current_user.is_authenticated %}
+          <li class="nav-item">
+            <a href="{{ url_for('main.profile') }}" class="nav-link px-2 py-0 d-flex align-items-center" style="height: 100%;">
+              <i class="fa-solid fa-user me-1"></i> Profile
+            </a>
+          </li>
+          {% endif %}
+
+          {% if current_user.is_authenticated and current_user.is_admin %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-warning px-2 py-0 d-flex align-items-center" href="#" id="adminMenu"
+              role="button" data-bs-toggle="dropdown" aria-expanded="false" style="height: 100%;">
+              <i class="fa-solid fa-user-shield me-1"></i> Admin
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark shadow-lg" aria-labelledby="adminMenu">
+              <li><a class="dropdown-item" href="{{ url_for('main.admin_products') }}">Manage Products</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('main.admin_orders') }}">Manage Orders</a></li>
+              {% if current_user.email == 'admin@admin.com' %}
+                <li><a class="dropdown-item" href="{{ url_for('main.add_product') }}">Add Product</a></li>
+              {% endif %}
+            </ul>
+          </li>
+          {% endif %}
+
+          <!-- CART -->
+          <li class="nav-item position-relative">
+            <a class="nav-link px-2 py-0 d-flex align-items-center" href="/cart" style="height: 100%;">
+              <i class="fa-solid fa-cart-shopping me-1"></i> 
+              <span id="cart-badge" class="badge rounded-pill bg-warning text-dark position-absolute top-0 start-100 translate-middle shadow-sm" style="font-size: 0.6rem;">
+                {{ cart_count }}
+              </span>
+            </a>
+          </li>
+
+          <!-- WISHLIST -->
+          <li class="nav-item position-relative">
+            <a class="nav-link px-2 py-0 d-flex align-items-center" href="/wishlist" style="height: 100%;">
+              <i class="fa-solid fa-heart me-1"></i> 
+              <span id="wishlist-badge" class="badge rounded-pill bg-danger position-absolute top-0 start-100 translate-middle shadow-sm" style="font-size: 0.6rem;">
+                {{ wishlist_count }}
+              </span>
+            </a>
+          </li>
+
+          {% if current_user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link btn btn-outline-warning text-dark px-2 text-lg rounded-pill shadow-sm d-flex align-items-center justify-content-center" href="{{ url_for('main.logout') }}" style="height: 90%; font-size: 0.7rem;">
+              <i class="fa-solid fa-right-from-bracket me-1"></i> Logout
+            </a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link btn btn-success px-2 ms-lg-1 rounded-pill shadow-sm d-flex align-items-center justify-content-center" href="{{ url_for('main.login') }}" style="height: 90%; font-size: 0.7rem;">
+              <i class="fa-solid fa-user me-1"></i> Login
+            </a>
+          </li>
+          {% endif %}
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CUSTOM CSS -->
+  <style>
+    .navbar-nav .nav-link {
+      transition: all 0.3s ease-in-out;
+      position: relative;
+    }
+    .navbar-nav .nav-link:hover::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 1.5px;
+      background: #ffc107;
+      bottom: 0;
+      left: 0;
+      border-radius: 2px;
+      animation: slideIn 0.3s forwards;
+    }
+    @keyframes slideIn {
+      0% { width: 0; }
+      100% { width: 100%; }
+    }
+    .navbar .dropdown-menu {
+      transition: all 0.3s;
+    }
+    .navbar .dropdown:hover .dropdown-menu {
+      display: block;
+      margin-top: 0;
+    }
+    .form-control:focus {
+      box-shadow: 0 0 6px #ffc107;
+      border-color: #ffc107;
+    }
+  </style>
+
+
+  <!-- OPTIONAL JS FOR SMOOTH DROPDOWN ON HOVER -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const dropdowns = document.querySelectorAll('.navbar .dropdown');
+      dropdowns.forEach(dd => {
+        dd.addEventListener('mouseenter', function() {
+          const menu = dd.querySelector('.dropdown-menu');
+          if (menu) menu.classList.add('show');
+        });
+        dd.addEventListener('mouseleave', function() {
+          const menu = dd.querySelector('.dropdown-menu');
+          if (menu) menu.classList.remove('show');
+        });
+      });
+    });
+  </script>
+
+
+    <!-- MAIN -->
+    <main class="flex-grow-1">
+      <div class="container mt-4">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, msg in messages %}
+              <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                {{ msg }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-dark text-light py-4 mt-auto">
+      <div class="container text-center">
+        &copy; {{ year }} Mitumba Shop &nbsp;|&nbsp;
+        <i class="fa-solid fa-shield-heart"></i> Thrifted Quality
+      </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+    <!-- Simple helper JS -->
+    <script>
+      console.log("Base template loaded successfully.");
+    </script>
+
+    
+    <script>
+        window.addEventListener('load', function() {
+
+          // If popup was already shown, stop here
+          if (localStorage.getItem('signin_popup_shown') === 'true') {
+            return;
+          }
+
+          // Set a timer for 30 seconds
+          setTimeout(function() {
+
+            // Mark popup as shown
+            localStorage.setItem('signin_popup_shown', 'true');
+
+            // Create the overlay
+            const modalOverlay = document.createElement('div');
+            modalOverlay.style.position = 'fixed';
+            modalOverlay.style.top = '0';
+            modalOverlay.style.left = '0';
+            modalOverlay.style.width = '100%';
+            modalOverlay.style.height = '100%';
+            modalOverlay.style.backgroundColor = 'rgba(0,0,0,0.6)';
+            modalOverlay.style.display = 'flex';
+            modalOverlay.style.alignItems = 'center';
+            modalOverlay.style.justifyContent = 'center';
+            modalOverlay.style.zIndex = '1050';
+
+            // Create modal content
+            const modalContent = document.createElement('div');
+            modalContent.style.backgroundColor = '#fff';
+            modalContent.style.padding = '30px 20px';
+            modalContent.style.borderRadius = '10px';
+            modalContent.style.textAlign = 'center';
+            modalContent.style.maxWidth = '400px';
+            modalContent.style.width = '90%';
+            modalContent.style.boxShadow = '0 5px 15px rgba(0,0,0,0.3)';
+
+            modalContent.innerHTML = `
+              <h5 style="margin-bottom: 15px;">Please Sign In</h5>
+              <p>You need to sign in to access more features.</p>
+              <div style="margin-top: 20px;">
+                <a href="{{ url_for('main.login') }}" class="btn btn-primary me-2">Sign In</a>
+                <button id="ignoreBtn" class="btn btn-secondary">Ignore</button>
+              </div>
+            `;
+
+            modalOverlay.appendChild(modalContent);
+            document.body.appendChild(modalOverlay);
+
+            // Close modal when ignore is clicked
+            document.getElementById('ignoreBtn').addEventListener('click', function() {
+              document.body.removeChild(modalOverlay);
+            });
+
+          }, 30000);
+
+        });
+    </script>
+
+
+
+
+
+  </body>
+</html>

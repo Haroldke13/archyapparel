@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+<div class="container my-5" style="max-width:600px;">
+    <h2>Checkout</h2>
+
+    <p class="lead">Total: <strong>Ksh {{ total if total is defined else '0.00' }}</strong></p>
+
+    <form action="/process_checkout" method="POST">
+
+        <label>Full Name</label>
+        <input type="text" name="fullname" class="form-control" required>
+
+        <label>Phone Number</label>
+        <input type="text" name="phone" class="form-control" value="{{ phone if phone is defined else '' }}" required>
+
+        <label>County</label>
+        <input type="text" name="county" class="form-control" required>
+
+        <label>Town/City</label>
+        <input type="text" name="town" class="form-control" required>
+
+        <label>Street/Address</label>
+        <input type="text" name="address" class="form-control mb-3" required>
+
+        <button class="btn btn-success w-100">Pay with M-Pesa</button>
+
+    </form>
+</div>
+{% endblock %}

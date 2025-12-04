@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Orders & Pending Payments</h2>
+
+<h3>Recent Orders</h3>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Order ID</th>
+      <th>User</th>
+      <th>Total</th>
+      <th>Status</th>
+      <th>MPESA Receipt</th>
+      <th>Created</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for o in orders %}
+    <tr>
+      <td><a href="{{ url_for('main.admin_order_detail', order_id=o.id) }}">{{ o.id }}</a></td>
+      <td>{{ user_map.get(o.user_id).username if user_map.get(o.user_id) else o.user_id }}</td>
+      <td>Ksh {{ o.total_amount }}</td>
+      <td>{{ o.status }}</td>
+      <td>{{ o.mpesa_receipt }}</td>
+      <td>{{ o.created_at }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="6">No orders yet.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h3>Pending Payments</h3>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Pending ID</th>
+      <th>User</th>
+      <th>CheckoutRequestID</th>
+      <th>Amount</th>
+      <th>Status</th>
+      <th>Created</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in pendings %}
+    <tr>
+      <td>{{ p.id }}</td>
+      <td>{{ user_map.get(p.user_id).username if user_map.get(p.user_id) else p.user_id }}</td>
+      <td>{{ p.checkout_request_id }}</td>
+      <td>Ksh {{ p.amount }}</td>
+      <td>{{ p.status }}</td>
+      <td>{{ p.created_at }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="6">No pending payments.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

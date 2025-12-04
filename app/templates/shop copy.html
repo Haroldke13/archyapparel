@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Shop | Products{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+
+    <h2 class="text-center mb-4">Our Products</h2>
+
+    {% if products %}
+        <div class="row">
+
+            {% for product in products %}
+            <div class="col-md-3 mb-4">
+                <div class="card shadow-sm h-100">
+
+                    <!-- IMAGE -->
+                   <img src="{{ product.image_url }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
+
+
+
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+
+                        <p class="card-text text-success fw-bold">
+                            Ksh {{ '%.2f'|format(product.price) }}
+                        </p>
+
+                        <a href="{{ url_for('main.add_to_cart', product_id=product.id) }}" 
+                            class="btn btn-dark w-100 mb-2">Add to Cart</a>
+
+                        <a href="{{ url_for('main.add_to_wishlist', product_id=product.id) }}"
+                            class="btn btn-outline-danger w-100">❤️ Wishlist</a>
+
+                    </div>
+
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+        <div class="alert alert-info text-center">
+            No products available yet.
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

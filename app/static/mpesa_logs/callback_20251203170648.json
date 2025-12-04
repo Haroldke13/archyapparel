@@ -1,0 +1,30 @@
+{
+  "Body": {
+    "stkCallback": {
+      "CallbackMetadata": {
+        "Item": [
+          {
+            "Name": "Amount",
+            "Value": 500
+          },
+          {
+            "Name": "MpesaReceiptNumber",
+            "Value": "RCPT123"
+          },
+          {
+            "Name": "TransactionDate",
+            "Value": 20251203120000
+          },
+          {
+            "Name": "PhoneNumber",
+            "Value": "254712345678"
+          }
+        ]
+      },
+      "CheckoutRequestID": "CR123",
+      "MerchantRequestID": "m1",
+      "ResultCode": 0,
+      "ResultDesc": "The service request is processed successfully."
+    }
+  }
+}

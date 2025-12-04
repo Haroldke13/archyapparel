@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Order #{{ order.id }}</h2>
+<p>User: {{ user.username if user else order.user_id }}</p>
+<p>Status: {{ order.status }}</p>
+<p>Total: Ksh {{ order.total_amount }}</p>
+<p>MPESA Receipt: {{ order.mpesa_receipt }}</p>
+
+<h3>Items</h3>
+<table class="table">
+  <thead>
+    <tr><th>Product</th><th>Unit Price</th><th>Quantity</th></tr>
+  </thead>
+  <tbody>
+    {% for it in items %}
+    <tr>
+      <td>{{ it.product_name }}</td>
+      <td>Ksh {{ it.unit_price }}</td>
+      <td>{{ it.quantity }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="3">No items recorded.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

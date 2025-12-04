@@ -1,0 +1,11 @@
+{
+  "Body": {
+    "stkCallback": {
+      "CallbackMetadata": {},
+      "CheckoutRequestID": "CR456",
+      "MerchantRequestID": "m2",
+      "ResultCode": 1,
+      "ResultDesc": "The transaction was cancelled by the user."
+    }
+  }
+}

@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}Mitumba Store | Home{% endblock %}
+
+{% block content %}
+<!-- HERO SECTION -->
+<section class="bg-dark text-light p-5 text-center">
+  <div class="container">
+    <h1 class="display-4 fw-bold">Premium Mitumba Clothing</h1>
+    <p class="lead">Quality & Affordable Thrift Fashion – Curated Just for You.</p>
+    <a href="{{ url_for('main.shop') }}" class="btn btn-light btn-lg mt-3">Shop Now</a>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="container py-5">
+  <h2 class="text-center mb-4 fw-bold">Categories</h2>
+  <div class="row g-4">
+
+    <div class="col-md-4">
+      <div class="card h-100 shadow-sm">
+        <img src="/static/img/men.jpeg" class="card-img-top" alt="Men Clothes">
+        <div class="card-body text-center">
+          <h5 class="card-title fw-bold">Men's Wear</h5>
+          <a href="{{ url_for('main.shop', category='men') }}" class="btn btn-primary">Explore</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card h-100 shadow-sm">
+        <img src="/static/img/women.webp" class="card-img-top" alt="Women Clothes">
+        <div class="card-body text-center">
+          <h5 class="card-title fw-bold">Women's Wear</h5>
+          <a href="{{ url_for('main.shop', category='women') }}" class="btn btn-primary">Explore</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card h-100 shadow-sm">
+        <img src="/static/img/kids.jpg" class="card-img-top" alt="Kids Clothes">
+        <div class="card-body text-center">
+          <h5 class="card-title fw-bold">Kids</h5>
+          <a href="{{ url_for('main.shop', category='kids') }}" class="btn btn-primary">Explore</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- NEW ARRIVALS -->
+<section class="bg-light py-5">
+  <div class="container">
+    <h2 class="text-center fw-bold mb-4">New Arrivals</h2>
+    <div class="row g-4">
+
+      {% for item in new_arrivals %}
+      <div class="col-md-3">
+        <div class="card h-100 shadow-sm">
+          {% if item.image_url and (item.image_url.startswith('http') or item.image_url.startswith('/')) %}
+          <img src="{{ item.image_url }}" class="card-img-top" alt="{{ item.name }}" style="width:200px; height:200px; object-fit:cover">
+          {% else %}
+          <img src="{{ url_for('static', filename='uploads/' ~ item.image_url) }}" class="card-img-top" alt="{{ item.name }}" style="width:200px; height:200px; object-fit:cover">
+          {% endif %}
+          <div class="card-body">
+            <h6 class="fw-bold">{{ item.name }}</h6>
+            <p class="text-muted">Ksh {{ item.price }}</p>
+            <a href="{{ url_for('main.product', id=item.id) }}" class="btn btn-outline-primary w-100">View</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA SECTION -->
+<section class="text-center p-5 bg-dark text-light">
+  <h2>Discover High-Quality Second-Hand Fashion</h2>
+  <p>Hand-picked bargains delivered to your doorstep.</p>
+  <a href="{{ url_for('main.shop') }}" class="btn btn-light btn-lg">Start Shopping</a>
+</section>
+{% endblock %}

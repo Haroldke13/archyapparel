@@ -1,0 +1,24 @@
+{
+  "Body": {
+    "stkCallback": {
+      "CallbackMetadata": {
+        "Item": [
+          {
+            "Name": "Amount",
+            "Value": 25
+          },
+          {
+            "Name": "MpesaReceiptNumber",
+            "Value": "ABC123"
+          },
+          {
+            "Name": "PhoneNumber",
+            "Value": "254712345678"
+          }
+        ]
+      },
+      "CheckoutRequestID": "ws_CO_03122025194002381712345678",
+      "ResultCode": 0
+    }
+  }
+}

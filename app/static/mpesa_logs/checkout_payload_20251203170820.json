@@ -1,0 +1,14 @@
+{
+  "BusinessShortCode": "174379",
+  "Password": "MTc0Mzc5YmZiMjc5ZjlhYTliZGJjZjE1OGU5N2RkNzFhNDY3Y2QyZTBjODkzMDU5YjEwZjc4ZTZiNzJhZGExZWQyYzkxOTIwMjUxMjAzMTcwODIw",
+  "Timestamp": "20251203170820",
+  "TransactionType": "CustomerPayBillOnline",
+  "Amount": 25,
+  "PartyA": "254701446573",
+  "PartyB": "174379",
+  "PhoneNumber": "254701446573",
+  "CallBackURL": "https://online-store-soch.onrender.com/mpesa/callback",
+  "QueueTimeOutURL": "https://online-store-soch.onrender.com/mpesa/callback",
+  "AccountReference": "Mitumba Store",
+  "TransactionDesc": "Order Payment"
+}
